@@ -14,6 +14,7 @@ import PlayerDetails from './components/PlayerDetails/PlayerDetails';
 //   width: 500px;
 //   background-image: radial-gradient(rgb(57 168 75), #2c7e39,#287334);
 // }
+// <input type="file" accept=".js, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
 
 function App() {
   return (

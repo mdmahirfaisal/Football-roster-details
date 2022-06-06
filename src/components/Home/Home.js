@@ -22,7 +22,7 @@ const Home = () => {
                             isActive ? "text-[#fea013]" : "text-[#6a573a]"
                         }
                     >
-                        <AiOutlineMenu className=' text-xl md:text-[2vw] my-5' />
+                        <AiOutlineMenu className=' text-xl md:text-[2vw] font-bold my-5' />
                     </NavLink>
                     <NavLink
                         to="/roster"
@@ -30,21 +30,15 @@ const Home = () => {
                             isActive ? "text-[#fea013]" : "text-[#6a573a]"
                         }
                     >
-                        <IoIosPeople className=' text-xl md:text-[2vw] my-5' />
+                        <IoIosPeople className=' text-xl md:text-[2vw] font-bold my-5' />
                     </NavLink>
                 </div>
             </div>
 
             {/* ------- Main Container ------- */}
 
-            <div className="col-span-11 min-h-[100vh] bg-[#1c1c1c] text-white">
-
-
-                {/* ----- Main container ----- */}
-
-                <div>
-                    <Outlet />
-                </div>
+            <div className="col-span-11 min-h-[100vh] bg-[#1c1c1c]">
+                <Outlet />
             </div>
         </div>
     );
