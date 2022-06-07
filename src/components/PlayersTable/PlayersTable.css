@@ -1,0 +1,20 @@
+.table-container:first-child {
+    margin-bottom: 20px;
+}
+
+.table-container:first-child .action-button {
+    display: none;
+}
+
+.table-container:first-child .action-container {
+    display: block;
+}
+
+.table-container:first-child div>.flag-image {
+    display: none;
+}
+
+.table-container:first-child p {
+    font-size: 16px;
+    text-align: center;
+}

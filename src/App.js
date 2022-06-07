@@ -23,7 +23,10 @@ function App() {
         <Route path="/" element={<Home />}>
           <Route path='/table' element={<PlayersTable />} />
           <Route path='/roster' element={<PlayerDetails />} />
+          <Route path='/' element={<PlayersTable />} />
+
         </Route>
+        <Route exact path="/" element={<PlayersTable />} />
       </Routes>
     </div>
   );
