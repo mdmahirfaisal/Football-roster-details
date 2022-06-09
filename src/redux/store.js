@@ -1,10 +1,9 @@
-import { configureStore } from '@reduxjs/toolkit';
-import footballTeamReducer from './slices/footballTeam';
+import { configureStore } from '@reduxjs/toolkit'
+import rosterReducer from './slices/rosterSlice'
 
 export const store = configureStore({
     reducer: {
-        footballTeam: footballTeamReducer,
+        roster: rosterReducer,
 
     },
 })
-

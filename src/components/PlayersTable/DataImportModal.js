@@ -1,17 +1,50 @@
 import React, { useEffect, useState } from 'react';
-import { handleLoadCSVData } from '../../redux/slices/footballTeam';
 import { useCSVReader } from 'react-papaparse';
 import './PlayersTable.css';
 import { AiOutlineClose } from 'react-icons/ai';
 import Modal from '@mui/material/Modal';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { handleImportedCsvData, handleGetCsvData } from '../../redux/slices/rosterSlice';
 
 
 
-const DataImportModal = ({ importModalOpen, setImportModalOpen, setAllRosterData }) => {
+const DataImportModal = ({ importModalOpen, setImportModalOpen }) => {
+    const { getCsvData } = useSelector((state => state.roster))
+    const { CSVReader } = useCSVReader();
     const dispatch = useDispatch();
     const handleImportModalClose = () => setImportModalOpen(false);
-    const { CSVReader } = useCSVReader();
+
+    // Modal display summary
+    const [totalPlayersCount, setTotalPlayersCount] = useState(null);
+    const [goalkeepersCount, setGoalkeepersCount] = useState(null);
+    const [defendersCount, setDefendersCount] = useState(null);
+    const [midfieldersCount, setMidfieldersCount] = useState(null);
+    const [forwardsCount, setForwardsCount] = useState(null);
+
+    useEffect(() => {
+        if (getCsvData.length) {
+            const player = getCsvData.filter(data => data[0] !== "Player Name")
+            setTotalPlayersCount(player);
+
+            const goal = getCsvData.filter(data => data[3] === "Goalkeeper")
+            setGoalkeepersCount(goal);
+
+            const defend = getCsvData.filter(data => data[3] === "Defender")
+            setDefendersCount(defend);
+
+            const mid = getCsvData.filter(data => data[3] === "Midfielder")
+            setMidfieldersCount(mid);
+
+            const forward = getCsvData.filter(data => data[3] === "Forward")
+            setForwardsCount(forward);
+        }
+    }, [getCsvData])
+
+    const handleLoadTableData = () => {
+        dispatch(handleImportedCsvData(getCsvData))
+        handleImportModalClose()
+    }
+
 
     return (
         <div>
@@ -32,14 +65,11 @@ const DataImportModal = ({ importModalOpen, setImportModalOpen, setAllRosterData
                     {/* --- Modal Body --- */}
 
                     <div className="">
-                        <p className='text-white'>Roster</p>
+                        <p className='text-white'>Roster File</p>
 
                         <CSVReader
                             onUploadAccepted={(results) => {
-                                dispatch(handleLoadCSVData(results.data))
-                                // console.table(results.data);
-                                setAllRosterData(results.data);
-
+                                dispatch(handleGetCsvData(results.data))
                             }}
                         >
                             {({
@@ -50,20 +80,39 @@ const DataImportModal = ({ importModalOpen, setImportModalOpen, setAllRosterData
                             }) => (
                                 <>
                                     {/* -------- Custom Uploader input style --------- */}
-                                    <div className=" flex items-center justify-between w-[350px] border-2 rounded-md h-14 border-[#3f3f3f] mt-2">
-                                        <p className='pl-2 text-gray-400 cursor-pointer'>{acceptedFile ? acceptedFile.name : "No file selected"}</p>
+                                    <div {...getRootProps()} className=" flex items-center justify-between w-[350px] border-2 rounded-md h-14 border-[#3f3f3f] mt-2 cursor-pointer">
+                                        <p className='pl-2 text-gray-400'>{acceptedFile ? acceptedFile.name : "No file selected"}</p>
 
-                                        <p {...getRootProps()} className='text-gray-400 cursor-pointer border-l-2 py-4 rounded-xl px-5 border-[#3f3f3f]'>Select File</p>
+                                        <p className='text-gray-400 border-l-2 py-4 rounded-xl px-5 border-[#3f3f3f]'>Select File</p>
                                     </div>
-                                    <ProgressBar style={{ backgroundColor: 'white' }} />
+                                    <p className="text-gray-400  cursor-default mt-2">File must be in .csv format</p>
+                                    {/* <ProgressBar style={{ backgroundColor: 'green' }} /> */}
                                 </>
                             )}
                         </CSVReader>
 
+                        {getCsvData[0] && <div className='mt-6'>
+                            <p className='text-white mb-4'>File Summary</p>
+                            <div className="grid grid-cols-5 gap-2">
+                                <div><p className="text-gray-400">Total Players</p>
+                                    <p className="text-white font-bold">{totalPlayersCount?.length}</p> </div>
 
+                                <div><p className="text-gray-400">Goalkeepers</p>
+                                    <p className="text-white font-bold">{goalkeepersCount?.length}</p> </div>
+
+                                <div><p className="text-gray-400">Defenders</p>
+                                    <p className="text-white font-bold">{defendersCount?.length}</p> </div>
+
+                                <div><p className="text-gray-400">Midfielders</p>
+                                    <p className="text-white font-bold">{midfieldersCount?.length}</p> </div>
+
+                                <div><p className="text-gray-400">Forwards</p>
+                                    <p className="text-white font-bold">{forwardsCount?.length}</p> </div>
+                            </div>
+                        </div>}
                     </div>
 
-                    <p className="border border-[#3f3f3f] bg-[#fea013] text-white rounded-md py-2 px-5 cursor-pointer right-3 fixed right-5 bottom-5">Import</p>
+                    {getCsvData.length ? <p onClick={handleLoadTableData} className="border border-[#3f3f3f] bg-[#fea013] text-white rounded-md py-2 px-5 cursor-pointer right-3 fixed right-5 bottom-5 hover:bg-red-500 transition-all duration-200">Import</p> : <p className="text-gray-400 cursor-default right-3 fixed right-5 bottom-5">Import</p>}
                 </div>
             </Modal>
         </div>

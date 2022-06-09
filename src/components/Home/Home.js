@@ -1,7 +1,7 @@
 import React from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { IoIosPeople } from 'react-icons/io';
-import { NavLink, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet } from 'react-router-dom';
 import footballLogo from './football-removebg-preview-removebg-preview.png';
 
 const Home = () => {
@@ -12,7 +12,9 @@ const Home = () => {
             <div className="col-span-1 h-[100vh] bg-[#111111] text-white">
                 <div className="flex items-center flex-col">
                     <div className="border-2 border-[#fea013] rounded-[50%] my-5">
-                        <img className='w-6 md:h-[3vw] h-6 md:w-[3vw] ' src={footballLogo} alt="Football" />
+                        <Link to="/">
+                            <img className='w-6 md:h-[3vw] h-6 md:w-[3vw] ' src={footballLogo} alt="Football" />
+                        </Link>
 
                     </div>
 

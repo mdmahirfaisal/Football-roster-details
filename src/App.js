@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Home from './components/Home/Home';
 import PlayersTable from './components/PlayersTable/PlayersTable';
@@ -19,15 +19,16 @@ import PlayerDetails from './components/PlayerDetails/PlayerDetails';
 function App() {
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={<Home />}>
-          <Route path='/table' element={<PlayersTable />} />
-          <Route path='/roster' element={<PlayerDetails />} />
-          <Route path='/' element={<PlayersTable />} />
-
-        </Route>
-        <Route exact path="/" element={<PlayersTable />} />
-      </Routes>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />}>
+            <Route path='/table' element={<PlayersTable />} />
+            <Route path='/roster' element={<PlayerDetails />} />
+            <Route path='/' element={<PlayersTable />} />
+          </Route>
+          <Route exact path="/" element={<PlayersTable />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
