@@ -1,6 +1,6 @@
 # WELCOME TO FOOTBALL ROSTER
 
-<a href="https://football-roster-details.vercel.app/table" target="_blank" rel="noopener noreferrer"><img src="https://i.ibb.co/Ltxt8sy/techNext.png" width="100%" alt="BEAM"/></a>
+<a href="https://football-roster-details.vercel.app/table" target="_blank" rel="noopener noreferrer"><img src="https://i.ibb.co/FgfvF5Z/homePage.png" width="100%" alt="BEAM"/></a>
 
 ## Description
 

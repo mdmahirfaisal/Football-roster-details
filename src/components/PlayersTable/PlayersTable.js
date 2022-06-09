@@ -88,7 +88,7 @@ const PlayersTable = () => {
           </div>
         </>}
 
-        {importedCsvData && <div className="h-[83vh] pl-3" style={{ overflowY: 'scroll' }}>
+        <div className={importedCsvData.length ? "h-[83vh] pl-3" : "hidden"} style={{ overflowY: 'scroll' }}>
           {importedCsvData?.map((data, index) =>
             <div key={index} className="grid grid-cols-9 gap-2 table-container pt-5">
               <div className="flex items-center gap-2">
@@ -111,7 +111,7 @@ const PlayersTable = () => {
               </div>
             </div>
           )}
-        </div>}
+        </div>
 
       </div>
 
@@ -126,15 +126,8 @@ const PlayersTable = () => {
 
       {/* --- action button popover ---  */}
       <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleCloseActionButton}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        className=""
+        id={id} open={open} anchorEl={anchorEl} onClose={handleCloseActionButton}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       >
 
         <div className='bg-[#2d2d2d] w-[300px] h-100% px-5 py-3 shadow-16'>
