@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BiSearch } from 'react-icons/bi';
 import { AiOutlineClose } from 'react-icons/ai';
 import { MdEdit } from 'react-icons/md';
@@ -7,12 +7,14 @@ import { BsThreeDots } from 'react-icons/bs';
 import DataImportModal from './DataImportModal';
 import { Popover } from '@mui/material';
 import EditPlayerModal from './EditPlayerModal';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import DeletePlayerModal from './DeletePlayerModal';
+import { handleSearchByPlayerName, handleRemoveSearch } from '../../redux/slices/rosterSlice';
 
 
 const PlayersTable = () => {
-  const { importedCsvData } = useSelector((state) => state.roster)
+  const { importedCsvData, searchResultData } = useSelector((state) => state.roster)
+  const dispatch = useDispatch()
   const [searchText, setSearchText] = useState("");
   // data import modal 
   const [importModalOpen, setImportModalOpen] = useState(false);
@@ -46,6 +48,41 @@ const PlayersTable = () => {
     handleCloseActionButton()
   };
 
+  /// Handle search filter name or position
+
+  const handlePlayerSearch = (e) => {
+    e.preventDefault();
+    if (searchText === "") dispatch(handleRemoveSearch())
+    else { dispatch(handleSearchByPlayerName(searchText)) }
+  }
+  /// handle remove search filter
+
+  const escFunction = (event) => {
+    if (event.key === "Escape") {
+      dispatch(handleRemoveSearch())
+    }
+  }
+  useEffect(() => {
+    if (searchResultData.length) {
+      document.addEventListener("keydown", escFunction, false);
+    }
+  }, [searchResultData.length])
+
+  const handleRemoveSearchResult = e => {
+    dispatch(handleRemoveSearch())
+  }
+
+  // handle display data;
+  const [displayData, setDisplayData] = useState([]);
+  useEffect(() => {
+    if (!searchResultData.length) {
+      setDisplayData(importedCsvData);
+    }
+    else {
+      setDisplayData(searchResultData);
+    }
+  }, [importedCsvData, searchResultData])
+
 
   return (
     <div className='px-[2vw]'>
@@ -56,11 +93,11 @@ const PlayersTable = () => {
         </div>
 
         <div className="flex items-center justify-center gap-2">
-          <div className="relative flex items-center gap-[2px] border border-[#3f3f3f] rounded-md p-2 w-[250px]">
+          <form onSubmit={handlePlayerSearch} className="relative flex items-center gap-[2px] border border-[#3f3f3f] rounded-md p-2 w-[250px]">
             <BiSearch className='text-gray-400 mt-[2px] text-xl' />
             <input type="text" placeholder='Find Player' onChange={(e) => setSearchText(e.target.value)} className='w-[150px] border-0 focus:outline-0 text-white bg-[#1c1c1c] text-gray-400 ' />
-            {searchText && <p className='text-[#fea013] ml-2'>Search</p>}
-          </div>
+            {(searchText && importedCsvData?.length && !searchResultData.length) ? <button type="submit" className='text-[#fea013] ml-2 cursor-pointer'>Search</button> : searchResultData.length ? <AiOutlineClose onClick={handleRemoveSearchResult} className='text-[#cbcbcb] ml-auto mr-1 text-lg cursor-pointer' /> : null}
+          </form>
 
           {!importedCsvData?.length ? <p onClick={handleImportModal} className="border border-[#3f3f3f] bg-[#fea013] text-white rounded-md p-2 cursor-pointer">Import Team</p>
             : <p onClick={handleImportModal} className="border border-[#3f3f3f] bg-[#1c1c1c] text-gray-400 rounded-md p-2 cursor-pointer">Re-Import Team</p>}
@@ -70,16 +107,21 @@ const PlayersTable = () => {
       </div>
 
       <div className='bg-[#2d2d2d] text-[#cbcbcb] min-h-[85vh] rounded-lg'>
-        {!importedCsvData?.length && <>
-          <div className="flex items-center justify-between text-center pt-3 px-5">
-            <p className='text-[#cbcbcb] text-md'>Player Name</p>
-            <p className='text-[#cbcbcb] text-md'>Jersey Number</p>
-            <p className='text-[#cbcbcb] text-md'>Position</p>
-            <p className='text-[#cbcbcb] text-md'>Height</p>
-            <p className='text-[#cbcbcb] text-md'>Weight</p>
-            <p className='text-[#cbcbcb] text-md'>Nationality</p>
-          </div>
+        <div className={importedCsvData[0] ? "grid grid-cols-9 gap-2 table-container pt-5 pb-2" : "flex items-center justify-evenly pt-5 "}>
+          <p className='text-[#cbcbcb] text-md'>Player Name</p>
+          <p className='text-[#cbcbcb] text-md'>Jersey Number</p>
+          <p className='text-[#cbcbcb] text-md'>Starter</p>
+          <p className='text-[#cbcbcb] text-md'>Position</p>
+          <p className='text-[#cbcbcb] text-md'>Height</p>
+          <p className='text-[#cbcbcb] text-md'>Weight</p>
+          <p className='text-[#cbcbcb] text-md'>Nationality</p>
+          {importedCsvData[0] && <>
+            <p className='text-[#cbcbcb] text-md'>Appearances</p>
+            <p className='text-[#cbcbcb] text-md'>Minutes Played</p>
+          </>}
+        </div>
 
+        {!importedCsvData?.length && <>
           <div className="min-h-[600px] grid grid-cols-1  content-center">
             <div className='self-center'>
               <p className='text-[#cbcbcb] text-md'> You do not have players on the roster</p>
@@ -89,10 +131,10 @@ const PlayersTable = () => {
         </>}
 
         <div className={importedCsvData.length ? "h-[83vh] pl-3" : "hidden"} style={{ overflowY: 'scroll' }}>
-          {importedCsvData?.map((data, index) =>
-            <div key={index} className="grid grid-cols-9 gap-2 table-container pt-5">
+          {displayData?.map((data, index) =>
+            <div key={index} className="grid grid-cols-9 gap-2 pt-5">
               <div className="flex items-center gap-2">
-                <img src={data[7]} className="w-6 h-6 rounded-[50%] flag-image" alt="" />
+                <img src={data[7]} className="w-6 h-6 rounded-[50%]" alt="" />
                 <p className='text-sm'>{data[0]}</p>
               </div>
               <p className='text-sm'>{data[2]}</p>
@@ -103,11 +145,11 @@ const PlayersTable = () => {
               <p className='text-sm'>{data[6]}</p>
               <p className='text-sm'>{data[9]}</p>
 
-              <div className="grid grid-cols-2 gap-2 action-container">
+              <div className="grid grid-cols-2 gap-2 ">
                 <p className='text-sm'>{data[10]}</p>
 
                 {/* --- Action button --- */}
-                <p onClick={(event) => handleOpenActionButton(event, data)} className='cursor-pointer  action-button'><BsThreeDots className='text-xl' /></p>
+                <p onClick={(event) => handleOpenActionButton(event, data)} className='cursor-pointer'><BsThreeDots className='text-xl' /></p>
               </div>
             </div>
           )}

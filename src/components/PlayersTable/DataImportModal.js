@@ -41,7 +41,7 @@ const DataImportModal = ({ importModalOpen, setImportModalOpen }) => {
     }, [getCsvData])
 
     const handleLoadTableData = () => {
-        dispatch(handleImportedCsvData(getCsvData))
+        dispatch(handleImportedCsvData(getCsvData.slice(1)))
         handleImportModalClose()
     }
 
@@ -70,6 +70,7 @@ const DataImportModal = ({ importModalOpen, setImportModalOpen }) => {
                         <CSVReader
                             onUploadAccepted={(results) => {
                                 dispatch(handleGetCsvData(results.data))
+                                console.log(results.data)
                             }}
                         >
                             {({

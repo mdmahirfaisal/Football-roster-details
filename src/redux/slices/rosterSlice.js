@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     getCsvData: [],
     importedCsvData: [],
+    searchResultData: [],
     editPlayerData: {},
 }
 
@@ -21,10 +22,19 @@ export const rosterSlice = createSlice({
             state.editPlayerData = payload
         },
 
+        /// filter search  ///
+        handleSearchByPlayerName: (state, { payload }) => {
+            state.searchResultData = state.importedCsvData?.filter(player => (player[0].toUpperCase().includes(payload.toUpperCase()) || player[3].toLowerCase().includes(payload.toLowerCase())))
+        },
+        /// remove search  ///
+        handleRemoveSearch: (state) => {
+            state.searchResultData = []
+        },
+
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { handleImportedCsvData, handleGetCsvData, handleEditPlayerData } = rosterSlice.actions
+export const { handleImportedCsvData, handleGetCsvData, handleEditPlayerData, handleSearchByPlayerName, handleRemoveSearch } = rosterSlice.actions
 
 export default rosterSlice.reducer

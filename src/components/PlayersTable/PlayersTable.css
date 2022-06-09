@@ -1,4 +1,4 @@
-.table-container:first-child {
+/* .table-container:first-child {
     margin-bottom: 20px;
 }
 
@@ -17,7 +17,7 @@
 .table-container:first-child p {
     font-size: 16px;
     text-align: center;
-}
+} */
 
 /* Radio button style */
 input[type="radio"] {
