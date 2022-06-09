@@ -130,7 +130,7 @@ const PlayersTable = () => {
           </div>
         </>}
 
-        <div className={importedCsvData.length ? "h-[83vh] pl-3" : "hidden"} style={{ overflowY: 'scroll' }}>
+        <div className={importedCsvData.length ? "h-[82vh] pl-3" : "hidden"} style={{ overflowY: 'scroll' }}>
           {displayData?.map((data, index) =>
             <div key={index} className="grid grid-cols-9 gap-2 pt-5">
               <div className="flex items-center gap-2">
