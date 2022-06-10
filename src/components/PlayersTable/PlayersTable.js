@@ -12,7 +12,7 @@ import DeletePlayerModal from './DeletePlayerModal';
 import { handleSearchByPlayerName, handleRemoveSearch } from '../../redux/slices/rosterSlice';
 
 
-const PlayersTable = () => {
+const PlayersTable = ({ editableTeamNameControl }) => {
   const { importedCsvData, searchResultData } = useSelector((state) => state.roster)
   const dispatch = useDispatch()
   const [searchText, setSearchText] = useState("");
@@ -89,7 +89,7 @@ const PlayersTable = () => {
       <div className='mb-5 pt-[2vw] flex items-center justify-between'>
         <div className="text-left">
           <p className='text-[#fea013] text-sm'>Roster Details</p>
-          <h2 className='text-white font-bold text-2xl'>My Team</h2>
+          {editableTeamNameControl}
         </div>
 
         <div className="flex items-center justify-center gap-2">
@@ -130,7 +130,7 @@ const PlayersTable = () => {
           </div>
         </>}
 
-        <div className={importedCsvData.length ? "h-[82vh] pl-3" : "hidden"} style={{ overflowY: 'scroll' }}>
+        <div className={importedCsvData.length ? "h-[79vh] pl-3" : "hidden"} style={{ overflowY: 'scroll' }}>
           {displayData?.map((data, index) =>
             <div key={index} className="grid grid-cols-9 gap-2 pt-5">
               <div className="flex items-center gap-2">

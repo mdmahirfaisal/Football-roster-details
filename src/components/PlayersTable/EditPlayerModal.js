@@ -22,6 +22,8 @@ const EditPlayerModal = ({ editModalOpen, setEditModalOpen, singlePlayer }) => {
     const [radioCheckedValue, setRadioCheckedValue] = useState("No")
     const handleStarterRadio = e => {
         setRadioCheckedValue(e.target.value)
+        console.log(e.target.name)
+        console.log(e.target.value)
     }
 
     const onSubmit = data => {
