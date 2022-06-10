@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     getCsvData: [],
+    isEmptyValueFile: false,
     importedCsvData: [],
     searchResultData: [],
     editPlayerData: {},
@@ -14,6 +15,10 @@ export const rosterSlice = createSlice({
         handleGetCsvData: (state, { payload }) => {
             state.getCsvData = payload
         },
+        handleIsEmptyValueFile: (state, { payload }) => {
+            state.isEmptyValueFile = payload
+        },
+
         handleImportedCsvData: (state, { payload }) => {
             state.importedCsvData = payload
         },
@@ -35,6 +40,6 @@ export const rosterSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { handleImportedCsvData, handleGetCsvData, handleEditPlayerData, handleSearchByPlayerName, handleRemoveSearch } = rosterSlice.actions
+export const { handleImportedCsvData, handleGetCsvData, handleIsEmptyValueFile, handleEditPlayerData, handleSearchByPlayerName, handleRemoveSearch } = rosterSlice.actions
 
 export default rosterSlice.reducer

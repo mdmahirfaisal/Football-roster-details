@@ -4,17 +4,16 @@ import './PlayersTable.css';
 import { AiOutlineClose } from 'react-icons/ai';
 import Modal from '@mui/material/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleImportedCsvData, handleGetCsvData } from '../../redux/slices/rosterSlice';
-
+import { handleImportedCsvData, handleGetCsvData, handleIsEmptyValueFile } from '../../redux/slices/rosterSlice';
 
 
 const DataImportModal = ({ importModalOpen, setImportModalOpen }) => {
-    const { getCsvData } = useSelector((state => state.roster))
+    const { getCsvData, isEmptyValueFile } = useSelector((state => state.roster))
     const { CSVReader } = useCSVReader();
     const dispatch = useDispatch();
     const handleImportModalClose = () => setImportModalOpen(false);
 
-    // Modal display summary
+    // display modal summary 
     const [totalPlayersCount, setTotalPlayersCount] = useState(null);
     const [goalkeepersCount, setGoalkeepersCount] = useState(null);
     const [defendersCount, setDefendersCount] = useState(null);
@@ -22,8 +21,8 @@ const DataImportModal = ({ importModalOpen, setImportModalOpen }) => {
     const [forwardsCount, setForwardsCount] = useState(null);
 
     useEffect(() => {
-        if (getCsvData.length) {
-            const player = getCsvData.filter(data => data[0] !== "Player Name")
+        if (getCsvData.length && !isEmptyValueFile) {
+            const player = getCsvData.filter(data => data !== "Player Name")
             setTotalPlayersCount(player);
 
             const goal = getCsvData.filter(data => data[3] === "Goalkeeper")
@@ -38,13 +37,29 @@ const DataImportModal = ({ importModalOpen, setImportModalOpen }) => {
             const forward = getCsvData.filter(data => data[3] === "Forward")
             setForwardsCount(forward);
         }
-    }, [getCsvData])
+    }, [dispatch, getCsvData, isEmptyValueFile])
 
+
+    //// Error handle is all cells are filled in csv file
+    const handleLoadCsvFileData = (data) => {
+        if (data.length) {
+            for (let allData of data) {
+                for (let singleData of allData) {
+                    if (Boolean(!singleData.length)) {
+                        dispatch(handleIsEmptyValueFile(Boolean(!singleData.length)))
+                        break
+                    }
+                }
+            }
+            dispatch(handleGetCsvData(data))
+        }
+    }
+
+    // click import button and display table data
     const handleLoadTableData = () => {
         dispatch(handleImportedCsvData(getCsvData.slice(1)))
         handleImportModalClose()
     }
-
 
     return (
         <div>
@@ -63,16 +78,13 @@ const DataImportModal = ({ importModalOpen, setImportModalOpen }) => {
                     </div>
 
                     {/* --- Modal Body --- */}
-
-                    <div className="">
+                    <div>
                         <p className='text-white'>Roster File</p>
-
                         <CSVReader
-                            onUploadAccepted={(results) => {
-                                dispatch(handleGetCsvData(results.data))
-                                console.log(results.data)
-                            }}
-                        >
+                            onUploadAccepted={async (results) => {
+                                await dispatch(handleIsEmptyValueFile(false))
+                                handleLoadCsvFileData(results.data)
+                            }}>
                             {({
                                 getRootProps,
                                 acceptedFile,
@@ -80,19 +92,21 @@ const DataImportModal = ({ importModalOpen, setImportModalOpen }) => {
                                 getRemoveFileProps,
                             }) => (
                                 <>
-                                    {/* -------- Custom Uploader input style --------- */}
-                                    <div {...getRootProps()} className=" flex items-center justify-between w-[350px] border-2 rounded-md h-14 border-[#3f3f3f] mt-2 cursor-pointer">
+                                    <div {...getRootProps()} className={isEmptyValueFile ? "flex items-center justify-between w-[350px] border rounded-md h-14 border-red-700 mt-2 cursor-pointer" : "flex items-center justify-between w-[350px] border-2 rounded-md h-14 border-[#3f3f3f] mt-2 cursor-pointer"}>
                                         <p className='pl-2 text-gray-400'>{acceptedFile ? acceptedFile.name : "No file selected"}</p>
-
-                                        <p className='text-gray-400 border-l-2 py-4 rounded-xl px-5 border-[#3f3f3f]'>Select File</p>
+                                        <p className={isEmptyValueFile ? 'text-gray-400 border-l py-4 rounded-xl px-5 border-red-700' : 'text-gray-400 border-l-2 py-4 rounded-xl px-5 border-[#3f3f3f]'}>Select File</p>
                                     </div>
-                                    <p className="text-gray-400  cursor-default mt-2">File must be in .csv format</p>
-                                    {/* <ProgressBar style={{ backgroundColor: 'green' }} /> */}
+
+                                    {isEmptyValueFile ? <div>
+                                        <p className="text-red-700 text-lg my-3 font-bold">Error</p>
+                                        <p className="text-gray-400  cursor-default mt-2">Your sheet is missing data. Please ensure all cells are filled out</p>
+                                    </div> : <p className="text-gray-400  cursor-default mt-2">File must be in .csv format</p>}
                                 </>
                             )}
                         </CSVReader>
 
-                        {getCsvData[0] && <div className='mt-6'>
+                        {/* ----- display modal summary -----   */}
+                        {(getCsvData.length && !isEmptyValueFile) && <div className='mt-6'>
                             <p className='text-white mb-4'>File Summary</p>
                             <div className="grid grid-cols-5 gap-2">
                                 <div><p className="text-gray-400">Total Players</p>
@@ -113,7 +127,7 @@ const DataImportModal = ({ importModalOpen, setImportModalOpen }) => {
                         </div>}
                     </div>
 
-                    {getCsvData.length ? <p onClick={handleLoadTableData} className="border border-[#3f3f3f] bg-[#fea013] text-white rounded-md py-2 px-5 cursor-pointer right-3 fixed right-5 bottom-5 hover:bg-red-500 transition-all duration-200">Import</p> : <p className="text-gray-400 cursor-default right-3 fixed right-5 bottom-5">Import</p>}
+                    {(getCsvData.length && !isEmptyValueFile) ? <p onClick={handleLoadTableData} className="border border-[#3f3f3f] bg-[#fea013] text-white rounded-md py-2 px-5 cursor-pointer right-3 fixed right-5 bottom-5 hover:bg-red-500 transition-all duration-200">Import</p> : <p className="text-gray-400 cursor-default right-3 fixed right-5 bottom-5">Import</p>}
                 </div>
             </Modal>
         </div>
