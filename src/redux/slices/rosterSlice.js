@@ -5,26 +5,30 @@ const initialState = {
     isEmptyValueFile: false,
     importedCsvData: [],
     searchResultData: [],
-    editPlayerData: {},
+    formationMissingData: false,
+    formationSelectedData: [],
 }
 
 export const rosterSlice = createSlice({
     name: 'roster',
     initialState,
     reducers: {
+        // get csv data
         handleGetCsvData: (state, { payload }) => {
             state.getCsvData = payload
         },
+        // check is empty value in csv file
         handleIsEmptyValueFile: (state, { payload }) => {
             state.isEmptyValueFile = payload
         },
-
+        // import csv data and display in table
         handleImportedCsvData: (state, { payload }) => {
             state.importedCsvData = payload
         },
-
+        // Edit player
         handleEditPlayerData: (state, { payload }) => {
-            state.editPlayerData = payload
+            const index = state.importedCsvData.findIndex((el) => el[10] === payload[10])
+            state.importedCsvData[index] = payload
         },
 
         /// filter search  ///
@@ -36,10 +40,21 @@ export const rosterSlice = createSlice({
             state.searchResultData = []
         },
 
+        /// handle data missing in formation ///
+        handleFormationMissingData: (state, { payload }) => {
+            state.formationMissingData = payload
+        },
+
+        /// handle formation active selected data ///
+        handleFormationSelectedData: (state, { payload }) => {
+            state.formationSelectedData = payload
+        },
+
+
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { handleImportedCsvData, handleGetCsvData, handleIsEmptyValueFile, handleEditPlayerData, handleSearchByPlayerName, handleRemoveSearch } = rosterSlice.actions
+export const { handleImportedCsvData, handleGetCsvData, handleIsEmptyValueFile, handleEditPlayerData, handleSearchByPlayerName, handleRemoveSearch, handleFormationMissingData, handleFormationSelectedData } = rosterSlice.actions
 
 export default rosterSlice.reducer

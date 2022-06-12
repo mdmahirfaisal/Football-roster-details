@@ -20,6 +20,7 @@ const DeletePlayerModal = ({ deleteModalOpen, setDeleteModalOpen, singlePlayer }
             onClose={handleDeleteModalClose}
         >
             <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] outline-none min-h-[150px] mx-auto min-w-[250px] md:min-w-[400px] md:min-h-[220px] bg-[#2d2d2d] rounded-lg shadow-5 p-5 '>
+
                 {/* --- Modal Header --- */}
                 <div className='flex items-center justify-between mb-8'>
                     <h2 className='text-xl md:text-2xl font-semibold text-white'>Are you sure</h2>

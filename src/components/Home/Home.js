@@ -6,9 +6,9 @@ import footballLogo from './football-removebg-preview-removebg-preview.png';
 
 const Home = () => {
 
-
     return (
         <div className='grid grid-cols-12'>
+            {/* --- Left Side bar --- */}
             <div className="col-span-1 min-h-[100vh] bg-[#111111] text-white">
                 <div className="flex items-center flex-col">
                     <div className="border-2 border-[#fea013] rounded-[50%] my-5">
@@ -38,8 +38,7 @@ const Home = () => {
             </div>
 
             {/* ------- Main Container ------- */}
-
-            <div className="col-span-11 min-h-[100vh] bg-[#1c1c1c]">
+            <div className="col-span-11 min-h-[100vh] bg-[#222222]">
                 <Outlet />
             </div>
         </div>

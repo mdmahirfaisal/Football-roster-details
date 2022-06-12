@@ -70,7 +70,7 @@ const DataImportModal = ({ importModalOpen, setImportModalOpen }) => {
                 aria-describedby="modal-modal-description"
 
             >
-                <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] outline-none min-h-[80%] mx-auto min-w-[80%] md:min-w-[65vw] md:min-h-[700px] bg-[#2d2d2d] rounded-lg shadow-5 p-5 '>
+                <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] outline-none min-h-[80%] mx-auto min-w-[80%] md:min-w-[65vw] md:min-h-[75vh] bg-[#2d2d2d] rounded-lg shadow-5 p-5 '>
                     {/* --- Modal Header --- */}
                     <div className='flex items-center justify-between border-b-2 border-[#3f3f3f] pb-2 mb-3'>
                         <h2 className='text-xl md:text-2xl font-semibold text-white'>Importer</h2>
@@ -92,11 +92,12 @@ const DataImportModal = ({ importModalOpen, setImportModalOpen }) => {
                                 getRemoveFileProps,
                             }) => (
                                 <>
+                                    {/* --- Open file input --- */}
                                     <div {...getRootProps()} className={isEmptyValueFile ? "flex items-center justify-between w-[350px] border rounded-md h-14 border-red-700 mt-2 cursor-pointer" : "flex items-center justify-between w-[350px] border-2 rounded-md h-14 border-[#3f3f3f] mt-2 cursor-pointer"}>
                                         <p className='pl-2 text-gray-400'>{acceptedFile ? acceptedFile.name : "No file selected"}</p>
                                         <p className={isEmptyValueFile ? 'text-gray-400 border-l py-4 rounded-xl px-5 border-red-700' : 'text-gray-400 border-l-2 py-4 rounded-xl px-5 border-[#3f3f3f]'}>Select File</p>
                                     </div>
-
+                                    {/* --- missing value in sheet error message ---  */}
                                     {isEmptyValueFile ? <div>
                                         <p className="text-red-700 text-lg my-3 font-bold">Error</p>
                                         <p className="text-gray-400  cursor-default mt-2">Your sheet is missing data. Please ensure all cells are filled out</p>
@@ -106,7 +107,7 @@ const DataImportModal = ({ importModalOpen, setImportModalOpen }) => {
                         </CSVReader>
 
                         {/* ----- display modal summary -----   */}
-                        {(getCsvData.length && !isEmptyValueFile) && <div className='mt-6'>
+                        {(getCsvData[0] && !isEmptyValueFile) && <div className='mt-6'>
                             <p className='text-white mb-4'>File Summary</p>
                             <div className="grid grid-cols-5 gap-2">
                                 <div><p className="text-gray-400">Total Players</p>
