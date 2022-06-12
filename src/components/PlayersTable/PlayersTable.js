@@ -95,7 +95,7 @@ const PlayersTable = ({ editableTeamNameControl }) => {
         <div className="flex items-center justify-center gap-2">
           <form onSubmit={handlePlayerSearch} className="relative flex items-center gap-[2px] border border-[#3f3f3f] rounded-md p-2 w-[250px]">
             <BiSearch className='text-gray-400 mt-[2px] text-xl' />
-            <input type="text" placeholder='Find Player' onChange={(e) => setSearchText(e.target.value)} className='w-[150px] border-0 focus:outline-0 text-white bg-[#1c1c1c] text-gray-400 ' />
+            <input type="text" placeholder='Find Player' onChange={(e) => setSearchText(e.target.value)} className='w-[150px] border-0 focus:outline-0 text-white bg-[#222] text-gray-400 ' />
             {(searchText && importedCsvData?.length && !searchResultData.length) ? <button type="submit" className='text-[#fea013] ml-2 cursor-pointer'>Search</button> : searchResultData.length ? <AiOutlineClose onClick={handleRemoveSearchResult} className='text-[#cbcbcb] ml-auto mr-1 text-lg cursor-pointer' /> : null}
           </form>
 
