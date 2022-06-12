@@ -9,19 +9,26 @@
 
 ## Necessary Install
 
-#### `Tailwind CSS`
-
-+ I have installed tailwind CSS and used and I have not written any CSS of my own. 
-
-
-#### `React icons`
-
-+ I have installed React icons and used.
+#### `React router dom`
++ I have installed react-router-dom and managed routing.
 
 #### `redux tookit`
++ I have installed the Redux toolkit and managed all my states using Redux Toolkit.
 
-+ I have installed the Redux toolkit and managed all my states using Redux Toolkit
+#### `Tailwind CSS`
++ I have installed tailwind CSS and used. 
 
+#### `Material UI`
++ I have installed Material UI and used some components. 
+
+#### `React contenteditable`
++ I have installed Material UI and used some components. 
+
+#### `React Papa parse`
++ I have installed React Papa parse and import csv file. 
+
+#### `React icons`
++ I have installed React icons and used.
 
 ## Deploy Process
 + I have deployed this project to Vercel.
