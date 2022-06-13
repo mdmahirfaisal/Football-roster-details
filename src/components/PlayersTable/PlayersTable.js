@@ -105,7 +105,7 @@ const PlayersTable = ({ editableTeamNameControl }) => {
           </form>
 
           {!importedCsvData?.length ? <p onClick={handleImportModal} className="border border-[#3f3f3f] bg-[#fea013] hover:bg-red-500 transition-all duration-200 text-white rounded-md p-2 cursor-pointer">Import Team</p>
-            : <p onClick={handleReImportModal} className="border border-[#3f3f3f] bg-[#1c1c1c] text-gray-400 rounded-md p-2 cursor-pointer">Re-Import Team</p>}
+            : <p onClick={handleReImportModal} className="border border-[#3f3f3f] bg-[#222] text-gray-400 rounded-md p-2 cursor-pointer">Re-Import Team</p>}
 
         </div>
       </div>

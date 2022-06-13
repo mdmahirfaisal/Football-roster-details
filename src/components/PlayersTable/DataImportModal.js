@@ -111,7 +111,7 @@ const DataImportModal = ({ importModalOpen, setImportModalOpen }) => {
                             <p className='text-white mb-4'>File Summary</p>
                             <div className="grid grid-cols-5 gap-2">
                                 <div><p className="text-gray-400">Total Players</p>
-                                    <p className="text-white font-bold">{totalPlayersCount?.length}</p> </div>
+                                    <p className="text-white font-bold">{totalPlayersCount?.length - 1}</p> </div>
 
                                 <div><p className="text-gray-400">Goalkeepers</p>
                                     <p className="text-white font-bold">{goalkeepersCount?.length}</p> </div>
