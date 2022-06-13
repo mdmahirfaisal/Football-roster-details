@@ -9,16 +9,22 @@ import { Popover } from '@mui/material';
 import EditPlayerModal from './EditPlayerModal';
 import { useSelector, useDispatch } from 'react-redux';
 import DeletePlayerModal from './DeletePlayerModal';
-import { handleSearchByPlayerName, handleRemoveSearch } from '../../redux/slices/rosterSlice';
+import { handleSearchByPlayerName, handleRemoveSearch, handleGetCsvData } from '../../redux/slices/rosterSlice';
 
 
 const PlayersTable = ({ editableTeamNameControl }) => {
   const { importedCsvData, searchResultData } = useSelector((state) => state.roster)
   const dispatch = useDispatch()
   const [searchText, setSearchText] = useState("");
+
   // data import modal 
   const [importModalOpen, setImportModalOpen] = useState(false);
   const handleImportModal = () => setImportModalOpen(true);
+  // re import modal
+  const handleReImportModal = () => {
+    dispatch(handleGetCsvData([]))
+    setImportModalOpen(true)
+  };
 
   // action button popover control 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -49,14 +55,13 @@ const PlayersTable = ({ editableTeamNameControl }) => {
   };
 
   /// Handle search filter name or position
-
   const handlePlayerSearch = (e) => {
     e.preventDefault();
     if (searchText === "") dispatch(handleRemoveSearch())
     else { dispatch(handleSearchByPlayerName(searchText)) }
   }
-  /// handle remove search filter
 
+  /// handle remove search filter
   const escFunction = (event) => {
     if (event.key === "Escape") {
       dispatch(handleRemoveSearch())
@@ -91,7 +96,7 @@ const PlayersTable = ({ editableTeamNameControl }) => {
           <p className='text-[#fea013] text-sm'>Roster Details</p>
           {editableTeamNameControl}
         </div>
-
+        {/* ---- Search Field ---- */}
         <div className="flex items-center justify-center gap-2">
           <form onSubmit={handlePlayerSearch} className="relative flex items-center gap-[2px] border border-[#3f3f3f] rounded-md p-2 w-[250px]">
             <BiSearch className='text-gray-400 mt-[2px] text-xl' />
@@ -99,13 +104,12 @@ const PlayersTable = ({ editableTeamNameControl }) => {
             {(searchText && importedCsvData?.length && !searchResultData.length) ? <button type="submit" className='text-[#fea013] ml-2 cursor-pointer'>Search</button> : searchResultData.length ? <AiOutlineClose onClick={handleRemoveSearchResult} className='text-[#cbcbcb] ml-auto mr-1 text-lg cursor-pointer' /> : null}
           </form>
 
-          {!importedCsvData?.length ? <p onClick={handleImportModal} className="border border-[#3f3f3f] bg-[#fea013] text-white rounded-md p-2 cursor-pointer">Import Team</p>
-            : <p onClick={handleImportModal} className="border border-[#3f3f3f] bg-[#1c1c1c] text-gray-400 rounded-md p-2 cursor-pointer">Re-Import Team</p>}
+          {!importedCsvData?.length ? <p onClick={handleImportModal} className="border border-[#3f3f3f] bg-[#fea013] hover:bg-red-500 transition-all duration-200 text-white rounded-md p-2 cursor-pointer">Import Team</p>
+            : <p onClick={handleReImportModal} className="border border-[#3f3f3f] bg-[#1c1c1c] text-gray-400 rounded-md p-2 cursor-pointer">Re-Import Team</p>}
 
         </div>
-
       </div>
-
+      {/* ----- Table Header ----- */}
       <div className='bg-[#2d2d2d] text-[#cbcbcb] min-h-[85vh] rounded-lg'>
         <div className={importedCsvData[0] ? "grid grid-cols-9 gap-2 table-container pt-5 pb-2" : "flex items-center justify-evenly pt-5 "}>
           <p className='text-[#cbcbcb] text-md'>Player Name</p>
@@ -121,6 +125,7 @@ const PlayersTable = ({ editableTeamNameControl }) => {
           </>}
         </div>
 
+        {/* ---- display center import button ---- */}
         {!importedCsvData?.length && <>
           <div className="min-h-[600px] grid grid-cols-1  content-center">
             <div className='self-center'>
@@ -129,7 +134,7 @@ const PlayersTable = ({ editableTeamNameControl }) => {
             </div>
           </div>
         </>}
-
+        {/* ----- Display table data ------ */}
         <div className={importedCsvData.length ? "h-[79vh] pl-3" : "hidden"} style={{ overflowY: 'scroll' }}>
           {displayData?.map((data, index) =>
             <div key={index} className="grid grid-cols-9 gap-2 pt-5">
