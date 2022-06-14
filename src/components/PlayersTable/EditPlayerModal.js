@@ -117,17 +117,17 @@ const EditPlayerModal = ({ editModalOpen, setEditModalOpen, singlePlayer }) => {
                             <p className="text-white text-lg">Starter</p>
                             <div className='flex items-center gap-10 mt-4'>
                                 <div className="flex items-center">
-                                    <input onClick={handleStarterRadio} defaultChecked={singlePlayer[8] === "No" ? singlePlayer[8] : ""} id="default-radio-1" type="radio" value="No" name="Starter" className="" />
+                                    <input onChange={handleStarterRadio} defaultChecked id="default-radio-1" type="radio" value="No" name="Starter" className="" />
                                     <label htmlFor="default-radio-1" className="ml-2 font-medium text-lg text-[#cbcbcb] cursor-pointer p-2 w-[60px] text-left">No</label>
                                 </div>
                                 <div className="flex items-center">
-                                    <input onClick={handleStarterRadio} defaultChecked={singlePlayer[8] === "Yes" ? singlePlayer[8] : ""} id="default-radio-2" type="radio" value="Yes" name="Starter" className="" />
+                                    <input onChange={handleStarterRadio} id="default-radio-2" type="radio" value="Yes" name="Starter" className="" />
                                     <label htmlFor="default-radio-2" className="ml-2  font-medium text-lg text-[#cbcbcb] cursor-pointer p-2 w-[60px] text-left ">Yes</label>
                                 </div>
                             </div>
                         </div>
 
-                        {radioCheckedValue === "Yes" ? <button type='submit' className="border border-[#3f3f3f] bg-[#fea013] text-white rounded-md py-2 px-5 cursor-pointer right-3 fixed right-5 bottom-5 hover:bg-red-500 transition-all duration-200 ">Edit Player</button> :
+                        {radioCheckedValue === "Yes" ? <button type='submit' defaultChecked className="border border-[#3f3f3f] bg-[#fea013] text-white rounded-md py-2 px-5 cursor-pointer right-3 fixed right-5 bottom-5 hover:bg-red-500 transition-all duration-200 ">Edit Player</button> :
                             <p className="text-gray-400 cursor-default right-3 fixed right-5 bottom-5">Edit Player</p>}
                     </form>
                 </div>
